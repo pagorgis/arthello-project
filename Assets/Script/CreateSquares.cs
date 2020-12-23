@@ -5,17 +5,30 @@ using UnityEngine;
 public class CreateSquares : MonoBehaviour
 {
 
-    public Transform squareObj;
+    public GameObject squareObj;
 
     // Start is called before the first frame update
     void Start()
     {
-        for (float x = -0.24f; x < 0.24f; x = x + 0.06f)
+        GameObject board = GameObject.Find("Game_board");
+        Transform boardTransform = board.GetComponent<Transform>();
+        int countZ = 0;
+        int countX = 0;
+
+        for (float z = -0.42f; z < 0.43f; z = z + 0.12f)
         {
-            for (float z = -0.24f; z < 0.24f; z = z + 0.06f)
+            countZ++;
+            for (float x = -0.42f; x < 0.43f; x = x + 0.12f)
             {
-                Instantiate(squareObj, new Vector3(x, 0.2f, z), squareObj.rotation);
+                countX++;
+                GameObject createdSquare = Instantiate(squareObj);
+                createdSquare.transform.parent = boardTransform;
+                createdSquare.transform.localPosition = new Vector3(x, 0f, z);
+                createdSquare.transform.rotation = Quaternion.identity;
+                createdSquare.transform.localScale = squareObj.transform.localScale;
+                createdSquare.name = "square_" + countZ + countX;
             }
+            countX = 0;
         }
     }
 
