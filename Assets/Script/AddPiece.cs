@@ -10,9 +10,14 @@ public class AddPiece : MonoBehaviour
     void Start()
     {
         GameObject square = GameObject.Find(gameObject.name);
-        Transform tempTransform = square.GetComponent<Transform>();
-        GameObject testa = Instantiate(testObj, tempTransform);
-        testa.name = "WORKS";
+
+        string[] square_num = gameObject.name.Split('_');
+        if (square_num[1] == "44" || square_num[1] == "45" || square_num[1] == "54" || square_num[1] == "55")
+        {
+            Transform tempTransform = square.GetComponent<Transform>();
+            GameObject testa = Instantiate(testObj, tempTransform);
+            testa.name = "piece_" + square_num[1];
+        }
     }
 
     // Update is called once per frame

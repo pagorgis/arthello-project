@@ -15,7 +15,7 @@ public class CreateSquares : MonoBehaviour
         int countZ = 0;
         int countX = 0;
 
-        for (float z = -0.42f; z < 0.43f; z = z + 0.12f)
+        for (float z = 0.42f; z > -0.43f; z = z - 0.12f)
         {
             countZ++;
             for (float x = -0.42f; x < 0.43f; x = x + 0.12f)
