@@ -5,6 +5,7 @@ using UnityEngine;
 public class AddPiece : MonoBehaviour
 {
     public GameObject testObj;
+    private bool placed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,19 +26,22 @@ public class AddPiece : MonoBehaviour
     {
         //Transform tempTransform = square.GetComponent<Transform>();
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            //Instantiate(testObj, new Vector3(0f, 2f, 0f), Quaternion.identity);
-
-            /*
-            Renderer rend = square.GetComponent<Renderer>();
-            //
-            //Create a new Material
-            Material material = new Material(Shader.Find("Standard"));
-            material.color = Color.red;
-
-            //Switch to new material
-            rend.material = material;
-            */
+        {           
+            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            RaycastHit rayhit = new RaycastHit();
+            if (Physics.Raycast(ray, out rayhit))
+            {
+                string hitObjectName = rayhit.transform.name;
+                if (placed == false && hitObjectName == gameObject.name)
+                {
+                    GameObject hitObject = GameObject.Find(gameObject.name);
+                    Transform hitObjectTransform = hitObject.GetComponent<Transform>();
+                    string[] square_num = gameObject.name.Split('_');
+                    GameObject piece = Instantiate(testObj, hitObjectTransform);
+                    piece.name = "piece_" + square_num[1];
+                    placed = true;
+                }
+            }
         }
     }
 }
