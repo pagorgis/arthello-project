@@ -23,7 +23,7 @@ public class CreateSquares : MonoBehaviour
                 countX++;
                 GameObject createdSquare = Instantiate(squareObj);
                 createdSquare.transform.parent = boardTransform;
-                createdSquare.transform.localPosition = new Vector3(x, 0f, z);
+                createdSquare.transform.localPosition = new Vector3(x, squareObj.transform.localPosition.y, z);
                 createdSquare.transform.rotation = Quaternion.identity;
                 createdSquare.transform.localScale = squareObj.transform.localScale;
                 createdSquare.name = "square_" + countZ + countX;
