@@ -47,9 +47,23 @@ public class AddPiece : MonoBehaviour
                     GameObject hitObject = GameObject.Find(gameObject.name);
                     Transform hitObjectTransform = hitObject.GetComponent<Transform>();
                     string[] square_num = gameObject.name.Split('_');
-                    GameObject piece = Instantiate(testObj, hitObjectTransform);
-                    piece.name = "piece_" + square_num[1];
-                    placed = true;
+                    if (OthelloGame.currentTurn == "black")
+                    {
+                        GameObject piece = Instantiate(testObj, hitObjectTransform);
+                        piece.transform.localRotation = Quaternion.Euler(0f, 0f, 180f);
+                        piece.transform.localPosition = new Vector3(piece.transform.localPosition.x, 4, piece.transform.localPosition.z); // 4 constant, should be changed
+                        piece.name = "piece_" + square_num[1];
+                        placed = true;
+                        OthelloGame.currentTurn = "white";
+
+                    } 
+                    else
+                    {
+                        GameObject piece = Instantiate(testObj, hitObjectTransform);
+                        piece.name = "piece_" + square_num[1];
+                        placed = true;
+                        OthelloGame.currentTurn = "black";
+                    }                    
                 }
             }
         }
