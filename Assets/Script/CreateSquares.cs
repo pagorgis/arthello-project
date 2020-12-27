@@ -2,31 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Creates the green squares of the board dynamically to make it playable like Othello
 public class CreateSquares : MonoBehaviour
 {
-
     public GameObject squareObj;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject board = GameObject.Find("Game_board");
-        Transform boardTransform = board.GetComponent<Transform>();
-        int countZ = 0;
+        GameObject board = GameObject.Find("Game_board");                               // Finds the base (black rectangular bottom)
+        Transform boardTransform = board.GetComponent<Transform>();                     // Get the transform-part of board base (position and stuff)
+        int countZ = 0;                                                                 
         int countX = 0;
 
-        for (float z = 0.42f; z > -0.43f; z = z - 0.12f)
+        for (float z = 0.42f; z > -0.43f; z = z - 0.12f)                                // To add squares with even spaces between them
         {
             countZ++;
             for (float x = -0.42f; x < 0.43f; x = x + 0.12f)
             {
                 countX++;
-                GameObject createdSquare = Instantiate(squareObj);
-                createdSquare.transform.parent = boardTransform;
-                createdSquare.transform.localPosition = new Vector3(x, squareObj.transform.localPosition.y, z);
-                createdSquare.transform.rotation = Quaternion.identity;
-                createdSquare.transform.localScale = squareObj.transform.localScale;
-                createdSquare.name = "square_" + countZ + countX;
+                GameObject createdSquare = Instantiate(squareObj);                      // Create the square
+                createdSquare.transform.parent = boardTransform;                        // Assign it to be the child of board base
+                createdSquare.transform.localPosition = new Vector3(                    // Position should be loop x,z and the prefab's y-position
+                    x, squareObj.transform.localPosition.y, z);
+                createdSquare.transform.rotation = Quaternion.identity;                 // No rotation
+                createdSquare.transform.localScale = squareObj.transform.localScale;    // Scale of square should be as defined in the square prefab
+                createdSquare.name = "square_" + countZ + countX;                       // To give name to the square, which row/col it concerns
             }
             countX = 0;
         }
