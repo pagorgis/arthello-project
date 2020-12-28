@@ -9,6 +9,7 @@ public class OthelloGame : MonoBehaviour
     public static List<string> validMoves = new List<string>();         // Store info about what moves are possible currently for the player
     public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
     public static List<string> piecesToConvert = new List<string>();    // Store info about what moves are possible currently for the player
+    static readonly object Lock = new object();
 
     // Start is called before the first frame update
     void Start()
@@ -17,10 +18,15 @@ public class OthelloGame : MonoBehaviour
         board[3, 4] = "black";
         board[4, 3] = "black";
         board[4, 4] = "white";
+        //board[4, 5] = "white";
+        //board[4, 6] = "white";
         GetValidMoves();
-        PlacePiece("23");
-        PlacePiece("42");
-        GetValidMoves();
+        //PlacePiece("54");
+        //GetValidMoves();
+        //PlacePiece("42");
+        //PlacePiece("23");
+        //PlacePiece("47");
+        //GetValidMoves();
         for (int z = 0; z < board.GetLength(0); z++)
         {
             string wack = "";
@@ -342,6 +348,13 @@ public class OthelloGame : MonoBehaviour
                 board[convertZ, convertX] = currentTurn;
             }
         }
+
+        string conc = "PIECES TO CONVERT: ";
+        foreach (string p in piecesToConvert)
+        {
+            conc = conc + p + " ";
+        }
+        Debug.Log(conc);
         currentTurn = GetOppositeColor();
     }
 
@@ -539,6 +552,27 @@ public class OthelloGame : MonoBehaviour
 
                 default:
                     break;
+            }
+        }
+    }
+
+    public static void ApplyConvertOfPiece(string position)
+    {
+        lock (Lock)
+        {
+            string conc = "APPLYCONVERTOFPIECE: ";
+            foreach (string p in piecesToConvert)
+            {
+                conc = conc + p + " ";
+            }
+            Debug.Log(conc);
+            for (int i = 0; i < piecesToConvert.Count; i++)
+            {
+                if (piecesToConvert[i] == position)
+                {
+                    piecesToConvert.RemoveAt(i);
+                    break;
+                }
             }
         }
     }
