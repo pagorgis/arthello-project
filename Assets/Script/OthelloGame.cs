@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class OthelloGame : MonoBehaviour
 {
-    public static string currentTurn = "black";             // Keep track of whose turn it is
-    public static string[,] board = new string[8, 8];       // Store the board information (which color on which position)
-    public static List<string> validMoves = new List<string>();
-    public static bool changedValidMoves = false;
+    public static string currentTurn = "black";                 // Keep track of whose turn it is
+    public static string[,] board = new string[8, 8];           // Store the board information (which color on which position)
+    public static List<string> validMoves = new List<string>(); // Store info about what moves are possible currently for the player
+    public static bool changedValidMoves = false;               // Check to see if validMoves needs to be updated
 
     // Start is called before the first frame update
     void Start()
@@ -16,8 +16,23 @@ public class OthelloGame : MonoBehaviour
         board[3, 4] = "black";
         board[4, 3] = "black";
         board[4, 4] = "white";
-        //Debug.Log(board[3, 4]);
         GetValidMoves();
+        for (int z = 0; z < board.GetLength(0); z++)
+        {
+            string wack = "";
+            for (int x = 0; x < board.GetLength(1); x++)
+            {
+                if (board[z, x] == "black" || board[z, x] == "white")
+                {
+                    wack = wack + board[z, x] + " ";
+                }
+                else
+                {
+                    wack = wack + "empty ";
+                }
+            }
+            Debug.Log(wack);
+        }
     }
 
     // Update is called once per frame
@@ -30,6 +45,7 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // Main method for updating validMoves with new values
     public static void GetValidMoves()
     {
         validMoves.Clear();
@@ -56,6 +72,8 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // Checks what squares are adjacent to the current square investigated and adds them to a temporary list
+    // Called by GetValidMoves()
     static void CollectAdjacentSquares(int z, int x)
     {
         List<string> adjacentSquares = new List<string>();
@@ -130,11 +148,12 @@ public class OthelloGame : MonoBehaviour
         IsValidMove(adjacentSquares, z, x);
     }
 
+    // Checks if the current square has at least one path in any direction that would lead to the move being valid/correct
+    // Called by CollectAdjacentSquares()
     static void IsValidMove(List<string> adjacentSquares, int z, int x)
     {
         for (int i = 0; i < adjacentSquares.Count; i++)
         {
-            //Debug.Log(adjacentSquares[i][0] + " " + adjacentSquares[i][1]);
             int adjacentZ = int.Parse(adjacentSquares[i][0].ToString());
             int adjacentX = int.Parse(adjacentSquares[i][1].ToString());
             string direction = GetDirection(z, x, adjacentZ, adjacentX);
@@ -147,6 +166,8 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // Returns the direction to the adjacent square from the current square
+    // Called by IsValidMove() and is used in CheckPath()
     static string GetDirection(int z, int x, int adjacentZ, int adjacentX)
     {
         if (adjacentZ < z && adjacentX == x) return "N";
@@ -160,9 +181,12 @@ public class OthelloGame : MonoBehaviour
         return "FAIL";
     }
 
+    // Returns true if the path of pieces from the current square, in a specific direction, is a valid move.
+    // Adjacent square has to start with the opposite piece color, then it has to reach the same color before extending 
+    // board limits to be a valid move.
+    // Called by IsValidMove(), direction from GetDirection()
     static bool CheckPath(string direction, int z, int x)
     {
-        //Debug.Log("Checkpath: " + z + ", " + x);
         switch (direction)
         {
             case "N":
@@ -299,6 +323,7 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // Returns the opposite color of current player
     static string GetOppositeColor()
     {
         return currentTurn == "black" ? "white" : "black";

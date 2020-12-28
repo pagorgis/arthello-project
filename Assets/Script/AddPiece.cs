@@ -56,7 +56,7 @@ public class AddPiece : MonoBehaviour
                         piece.name = "piece_" + square_num[1];
                         placed = true;
                         OthelloGame.currentTurn = "white";                                  // Changes game state to indicate opposing player's turn
-                        OthelloGame.changedValidMoves = true;
+                        OthelloGame.changedValidMoves = true;                               // Tells Game State that valid moves need to be changed, update done in that class
                     } 
                     else
                     {
