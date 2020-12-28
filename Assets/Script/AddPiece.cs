@@ -13,14 +13,14 @@ public class AddPiece : MonoBehaviour
     {
         GameObject square = GameObject.Find(gameObject.name);               // Finds the name of the square object, e.g. square_45
         string[] square_num = gameObject.name.Split('_');
-        if (square_num[1] == "44" || square_num[1] == "55")                 // Create the two white pieces at the start of the game.
+        if (square_num[1] == "33" || square_num[1] == "44")                 // Create the two white pieces at the start of the game.
         {
             Transform squareTransform = square.GetComponent<Transform>();   // Get the transform-part of square (position and stuff)
             GameObject piece = Instantiate(pieceObj, squareTransform);      // Create piece in square; square becomes the piece's parent
             piece.name = "piece_" + square_num[1];                          // Give the piece a name
             placed = true;
         }
-        else if (square_num[1] == "45" || square_num[1] == "54") // Create the two black pieces at the start of the game.
+        else if (square_num[1] == "34" || square_num[1] == "43") // Create the two black pieces at the start of the game.
         {
             Transform squareTransform = square.GetComponent<Transform>();
             GameObject piece = Instantiate(pieceObj, squareTransform);

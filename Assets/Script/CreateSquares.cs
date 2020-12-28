@@ -17,10 +17,9 @@ public class CreateSquares : MonoBehaviour
 
         for (float z = 0.42f; z > -0.43f; z = z - 0.12f)                                // To add squares with even spaces between them
         {
-            countZ++;
             for (float x = -0.42f; x < 0.43f; x = x + 0.12f)
             {
-                countX++;
+                
                 GameObject createdSquare = Instantiate(squareObj);                      // Create the square
                 createdSquare.transform.parent = boardTransform;                        // Assign it to be the child of board base
                 createdSquare.transform.localPosition = new Vector3(                    // Position should be loop x,z and the prefab's y-position
@@ -28,7 +27,9 @@ public class CreateSquares : MonoBehaviour
                 createdSquare.transform.rotation = Quaternion.identity;                 // No rotation
                 createdSquare.transform.localScale = squareObj.transform.localScale;    // Scale of square should be as defined in the square prefab
                 createdSquare.name = "square_" + countZ + countX;                       // To give name to the square, which row/col it concerns
+                countX++;
             }
+            countZ++;
             countX = 0;
         }
     }
