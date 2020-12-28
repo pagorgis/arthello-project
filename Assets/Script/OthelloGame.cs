@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class OthelloGame : MonoBehaviour
 {
-    public static string currentTurn = "black";                 // Keep track of whose turn it is
-    public static string[,] board = new string[8, 8];           // Store the board information (which color on which position)
-    public static List<string> validMoves = new List<string>(); // Store info about what moves are possible currently for the player
-    public static bool changedValidMoves = false;               // Check to see if validMoves needs to be updated
+    public static string currentTurn = "black";                         // Keep track of whose turn it is
+    public static string[,] board = new string[8, 8];                   // Store the board information (which color on which position)
+    public static List<string> validMoves = new List<string>();         // Store info about what moves are possible currently for the player
+    public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
+    public static List<string> piecesToConvert = new List<string>();    // Store info about what moves are possible currently for the player
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,9 @@ public class OthelloGame : MonoBehaviour
         board[3, 4] = "black";
         board[4, 3] = "black";
         board[4, 4] = "white";
+        GetValidMoves();
+        PlacePiece("23");
+        PlacePiece("42");
         GetValidMoves();
         for (int z = 0; z < board.GetLength(0); z++)
         {
@@ -53,8 +57,6 @@ public class OthelloGame : MonoBehaviour
         {
             for (int x = 0; x < board.GetLength(1); x++)
             {
-                //string currentSquarePos = "" + (z + 1) + (x + 1);
-                //Debug.Log("CURRENT: " + z + " | " + x);
                 if (board[z, x] == "black" || board[z, x] == "white")
                 {
                     continue;
@@ -320,6 +322,224 @@ public class OthelloGame : MonoBehaviour
             default:
                 return false;
 
+        }
+    }
+
+    public static void PlacePiece(string position)
+    {
+        piecesToConvert.Clear();
+        int z = int.Parse(position[0].ToString());
+        int x = int.Parse(position[1].ToString());
+        List<string> possibleDirections = GetPossibleDirections(position);
+        DeterminePiecesToConvert(possibleDirections, z, x);
+        board[z, x] = currentTurn;
+        foreach (string piecePosition in piecesToConvert)
+        {
+            int convertZ = int.Parse(piecePosition[0].ToString());
+            int convertX = int.Parse(piecePosition[1].ToString());
+            if (board[convertZ, convertX] == GetOppositeColor())
+            {
+                board[convertZ, convertX] = currentTurn;
+            }
+        }
+        currentTurn = GetOppositeColor();
+    }
+
+    static List<string> GetPossibleDirections(string position)
+    {
+        if (position == "00")
+        {
+            return new List<string> { "E", "S", "SE" };
+        }
+        else if (position == "07")
+        {
+            return new List<string> { "W", "SW", "S" };
+        }
+        else if (position == "70")
+        {
+            return new List<string> { "N", "NE", "E" };
+        }
+        else if (position == "77")
+        {
+            return new List<string> { "NW", "N", "W" };
+        }
+        else if (position == "01" || position == "02" || position == "03" || position == "04" || position == "05" || position == "06")
+        {
+            return new List<string> { "W", "SW", "S", "SE", "E" };
+        }
+        else if (position == "71" || position == "72" || position == "73" || position == "74" || position == "75" || position == "76")
+        {
+            return new List<string> { "W", "NW", "N", "NE", "E" };
+        }
+        else if (position == "10" || position == "20" || position == "30" || position == "40" || position == "50" || position == "60")
+        {
+            return new List<string> { "N", "NE", "E", "SE", "S" };
+        }
+        else if (position == "17" || position == "27" || position == "37" || position == "47" || position == "57" || position == "67")
+        {
+            return new List<string> { "N", "NW", "W", "SW", "S" };
+        }
+        else
+        {
+            return new List<string> { "NW", "N", "NE", "E", "SE", "S", "SW", "W" };
+        }
+        return new List<string>();
+    }
+
+    static void DeterminePiecesToConvert(List<string> possibleDirections, int z, int x)
+    {
+        foreach (string direction in possibleDirections)
+        {
+            List<string> tempConvert = new List<string>();
+            switch (direction)
+            {
+                case "N":
+                    if (board[z - 1, x] == GetOppositeColor())
+                    {
+                        tempConvert.Add((z - 1) + "" + x);
+                        for (int i = z - 2; i >= 0; i--)
+                        {
+                            if (board[i, x] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(i + "" + x);
+                        }
+                    }
+                    break;
+
+                case "NE":
+                    if (board[z - 1, x + 1] == GetOppositeColor())
+                    {
+                        tempConvert.Add((z - 1) + "" + (x + 1));
+                        int zCounter = z - 2;
+                        int xCounter = x + 2;
+                        while (zCounter >= 0 && xCounter < board.GetLength(1))
+                        {
+                            if (board[zCounter, xCounter] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(zCounter + "" + xCounter);
+                            zCounter--;
+                            xCounter++;
+                        }
+                    }
+                    break;
+
+                case "E":
+                    if (board[z, x + 1] == GetOppositeColor())
+                    {
+                        tempConvert.Add(z + "" + (x + 1));
+                        for (int i = x + 2; i < board.GetLength(1); i++)
+                        {
+                            if (board[z, i] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(z + "" + i);
+                        }
+                    }
+                    break;
+
+                case "SE":
+                    if (board[z + 1, x + 1] == GetOppositeColor())
+                    {
+                        tempConvert.Add((z + 1) + "" + (x + 1));
+                        int zCounter = z + 2;
+                        int xCounter = x + 2;
+                        while (zCounter < board.GetLength(0) && xCounter < board.GetLength(1))
+                        {
+                            if (board[zCounter, xCounter] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(zCounter + "" + xCounter);
+                            zCounter++;
+                            xCounter++;
+                        }
+                    }
+                    break;
+
+                case "S":
+                    if (board[z + 1, x] == GetOppositeColor())
+                    {
+                        tempConvert.Add((z + 1) + "" + x);
+                        for (int i = z + 2; i < board.GetLength(0); i++)
+                        {
+                            if (board[i, x] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(i + "" + x);
+                        }
+                    }
+                    break;
+
+                case "SW":
+                    if (board[z + 1, x - 1] == GetOppositeColor())
+                    {
+                        tempConvert.Add((z + 1) + "" + (x - 1));
+                        int zCounter = z + 2;
+                        int xCounter = x - 2;
+                        while (zCounter < board.GetLength(0) && xCounter >= 0)
+                        {
+                            if (board[zCounter, xCounter] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(zCounter + "" + xCounter);
+                            zCounter++;
+                            xCounter--;
+                        }
+                    }
+                    break;
+
+                case "W":
+                    if (board[z, x - 1] == GetOppositeColor())
+                    {
+                        tempConvert.Add(z + "" + (x - 1));
+                        for (int i = x - 2; i >= 0; i--)
+                        {
+                            if (board[z, i] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(z + "" + i);
+                        }
+                    }
+                    break;
+
+                case "NW":
+                    if (board[z - 1, x - 1] == GetOppositeColor())
+                    {
+                        tempConvert.Add((z - 1) + "" + (x - 1));
+                        int zCounter = z - 2;
+                        int xCounter = x - 2;
+                        while (zCounter >= 0 && xCounter >= 0)
+                        {
+                            if (board[zCounter, xCounter] == currentTurn)
+                            {
+                                piecesToConvert.AddRange(tempConvert);
+                                break;
+                            }
+                            tempConvert.Add(zCounter + "" + xCounter);
+                            zCounter--;
+                            xCounter--;
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
