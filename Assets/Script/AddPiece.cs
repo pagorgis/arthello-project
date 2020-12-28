@@ -35,6 +35,7 @@ public class AddPiece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        List<string> validMoves = OthelloGame.validMoves;
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)            // If touch is detected by user
         {           
             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -42,11 +43,11 @@ public class AddPiece : MonoBehaviour
             if (Physics.Raycast(ray, out rayhit))                                           // If touch by user hit the square object
             {
                 string hitObjectName = rayhit.transform.name;                               // Get the name of the square object
-                if (placed == false && hitObjectName == gameObject.name)                    // If it's this square object and no piece has been placed there
+                string[] square_num = gameObject.name.Split('_');
+                if (placed == false && hitObjectName == gameObject.name && validMoves.Contains(square_num[1]))      // If it's this square object and no piece has been placed there
                 {
                     GameObject hitObject = GameObject.Find(gameObject.name);                // Almost same code below as Start()
                     Transform hitObjectTransform = hitObject.GetComponent<Transform>();
-                    string[] square_num = gameObject.name.Split('_');
                     if (OthelloGame.currentTurn == "black")
                     {
                         GameObject piece = Instantiate(pieceObj, hitObjectTransform);
@@ -55,7 +56,7 @@ public class AddPiece : MonoBehaviour
                         piece.name = "piece_" + square_num[1];
                         placed = true;
                         OthelloGame.currentTurn = "white";                                  // Changes game state to indicate opposing player's turn
-
+                        OthelloGame.changedValidMoves = true;
                     } 
                     else
                     {
@@ -63,6 +64,7 @@ public class AddPiece : MonoBehaviour
                         piece.name = "piece_" + square_num[1];
                         placed = true;
                         OthelloGame.currentTurn = "black";
+                        OthelloGame.changedValidMoves = true;
                     }                    
                 }
             }

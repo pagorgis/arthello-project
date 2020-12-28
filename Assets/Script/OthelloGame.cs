@@ -7,6 +7,7 @@ public class OthelloGame : MonoBehaviour
     public static string currentTurn = "black";             // Keep track of whose turn it is
     public static string[,] board = new string[8, 8];       // Store the board information (which color on which position)
     public static List<string> validMoves = new List<string>();
+    public static bool changedValidMoves = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,10 +23,14 @@ public class OthelloGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (changedValidMoves)
+        {
+            GetValidMoves();
+            changedValidMoves = false;
+        }
     }
 
-    public void GetValidMoves()
+    public static void GetValidMoves()
     {
         validMoves.Clear();
         for (int z = 0; z < board.GetLength(0); z++)
@@ -51,7 +56,7 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
-    public void CollectAdjacentSquares(int z, int x)
+    static void CollectAdjacentSquares(int z, int x)
     {
         List<string> adjacentSquares = new List<string>();
         string concatParams = z + "" + x;
@@ -125,7 +130,7 @@ public class OthelloGame : MonoBehaviour
         IsValidMove(adjacentSquares, z, x);
     }
 
-    public void IsValidMove(List<string> adjacentSquares, int z, int x)
+    static void IsValidMove(List<string> adjacentSquares, int z, int x)
     {
         for (int i = 0; i < adjacentSquares.Count; i++)
         {
@@ -142,7 +147,7 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
-    public string GetDirection(int z, int x, int adjacentZ, int adjacentX)
+    static string GetDirection(int z, int x, int adjacentZ, int adjacentX)
     {
         if (adjacentZ < z && adjacentX == x) return "N";
         if (adjacentZ < z && adjacentX > x) return "NE";
@@ -155,7 +160,7 @@ public class OthelloGame : MonoBehaviour
         return "FAIL";
     }
 
-    public bool CheckPath(string direction, int z, int x)
+    static bool CheckPath(string direction, int z, int x)
     {
         //Debug.Log("Checkpath: " + z + ", " + x);
         switch (direction)
@@ -294,7 +299,7 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
-    public string GetOppositeColor()
+    static string GetOppositeColor()
     {
         return currentTurn == "black" ? "white" : "black";
     }
