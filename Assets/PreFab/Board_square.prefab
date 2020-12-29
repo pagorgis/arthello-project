@@ -125,3 +125,5 @@ MonoBehaviour:
     type: 3}
   blackHelperObj: {fileID: 3907611908793076904, guid: a472ea48a95c30a4298e9dd651f0745d,
     type: 3}
+  blue: {fileID: 2100000, guid: a05d01277b3fa2946bf1aceb9d291550, type: 2}
+  red: {fileID: 2100000, guid: 1fc68d580f394784da788cb7c1c08dc8, type: 2}

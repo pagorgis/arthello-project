@@ -8,6 +8,8 @@ public class PlaceGuide : MonoBehaviour
     public GameObject whiteHelperObj;
     public GameObject blackHelperObj;
     private bool helperObjExists = false;
+    public Material blue;
+    public Material red;
 
     void Start()
     {
@@ -49,6 +51,23 @@ public class PlaceGuide : MonoBehaviour
             piece.name = "helper_" + square_num[1];
             piece.layer = LayerMask.NameToLayer("Ignore Raycast");
             helperObjExists = true;
+        }
+        else if (helperObjExists == true)
+        {
+            foreach (GameObject child in children)
+            {
+                if (child.name.StartsWith("helper"))
+                {
+                    if (OthelloGame.currentTurn == "white")
+                    {
+                        child.GetComponent<Renderer>().material = blue;
+                    }
+                    else if (OthelloGame.currentTurn == "black")
+                    {
+                        child.GetComponent<Renderer>().material = red;
+                    }
+                }
+            }
         }
     }
 }

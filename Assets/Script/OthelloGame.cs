@@ -348,6 +348,8 @@ public class OthelloGame : MonoBehaviour
                 board[convertZ, convertX] = currentTurn;
             }
         }
+        currentTurn = GetOppositeColor();
+        changedValidMoves = true;
 
         string conc = "PIECES TO CONVERT: ";
         foreach (string p in piecesToConvert)
@@ -355,7 +357,6 @@ public class OthelloGame : MonoBehaviour
             conc = conc + p + " ";
         }
         Debug.Log(conc);
-        currentTurn = GetOppositeColor();
     }
 
     static List<string> GetPossibleDirections(string position)

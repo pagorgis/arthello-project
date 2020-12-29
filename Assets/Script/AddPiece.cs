@@ -57,7 +57,7 @@ public class AddPiece : MonoBehaviour
                         placed = true;
                         OthelloGame.PlacePiece(square_num[1]);
                         //OthelloGame.currentTurn = "white";                                  // Changes game state to indicate opposing player's turn
-                        OthelloGame.changedValidMoves = true;                               // Tells Game State that valid moves need to be changed, update done in that class
+                        //OthelloGame.changedValidMoves = true;                               // Tells Game State that valid moves need to be changed, update done in that class
                     } 
                     else
                     {
@@ -66,7 +66,7 @@ public class AddPiece : MonoBehaviour
                         placed = true;
                         OthelloGame.PlacePiece(square_num[1]);
                         //OthelloGame.currentTurn = "black";
-                        OthelloGame.changedValidMoves = true;
+                        //OthelloGame.changedValidMoves = true;
                     }                    
                 }
             }
