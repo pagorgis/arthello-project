@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6812535304912934073}
   - component: {fileID: 6812535304912934022}
   - component: {fileID: 1162783884379637560}
+  - component: {fileID: -9032676769131685586}
   m_Layer: 0
   m_Name: Board_square
   m_TagString: Untagged
@@ -107,4 +108,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieceObj: {fileID: 1912100097334413593, guid: 33d3a70373f3c2949924b9ff2600b3e4,
+    type: 3}
+--- !u!114 &-9032676769131685586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6812535304912934020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c741d6261675b045be17b9e698141a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteHelperObj: {fileID: 6403037807452181507, guid: 4fe68b3c9edfc9042a2c82ed5d39423a,
+    type: 3}
+  blackHelperObj: {fileID: 3907611908793076904, guid: a472ea48a95c30a4298e9dd651f0745d,
     type: 3}
