@@ -2,50 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Script that contain the state of the board and methods for checking and doing moves on the board
 public class OthelloGame : MonoBehaviour
 {
     public static string currentTurn = "black";                         // Keep track of whose turn it is
-    public static string[,] board = new string[8, 8];                   // Store the board information (which color on which position)
+    public static string[,] board = new string[8, 8];                   // Store the board information (which color on which position), 2D
     public static List<string> validMoves = new List<string>();         // Store info about what moves are possible currently for the player
     public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
-    public static List<string> piecesToConvert = new List<string>();    // Store info about what moves are possible currently for the player
-    static readonly object Lock = new object();
+    public static List<string> piecesToConvert = new List<string>();    // Store info about the pieces to be flipped after playing a piece
+    static readonly object Lock = new object();                         // To make access to ApplyConvertOfPiece synchronized when accessing it
 
     // Start is called before the first frame update
+    // Attaches the pieces at start and get the valid moves
     void Start()
     {
         board[3, 3] = "white";
         board[3, 4] = "black";
         board[4, 3] = "black";
         board[4, 4] = "white";
-        //board[4, 5] = "white";
-        //board[4, 6] = "white";
         GetValidMoves();
-        //PlacePiece("54");
-        //GetValidMoves();
-        //PlacePiece("42");
-        //PlacePiece("23");
-        //PlacePiece("47");
-        //GetValidMoves();
-        for (int z = 0; z < board.GetLength(0); z++)
-        {
-            string wack = "";
-            for (int x = 0; x < board.GetLength(1); x++)
-            {
-                if (board[z, x] == "black" || board[z, x] == "white")
-                {
-                    wack = wack + board[z, x] + " ";
-                }
-                else
-                {
-                    wack = wack + "empty ";
-                }
-            }
-            Debug.Log(wack);
-        }
     }
 
     // Update is called once per frame
+    // When piece has been played, tell class to update validMoves
     void Update()
     {
         if (changedValidMoves)
@@ -56,6 +35,8 @@ public class OthelloGame : MonoBehaviour
     }
 
     // Main method for updating validMoves with new values
+    // Goes through all squares of board and, if empty, it investigates if valid place to put piece
+    // Those places (positions) are saved in the public variable validMoves.
     public static void GetValidMoves()
     {
         validMoves.Clear();
@@ -73,10 +54,6 @@ public class OthelloGame : MonoBehaviour
                 }
                 
             }
-        }
-        for (int i = 0; i < validMoves.Count; i++)
-        {
-            Debug.Log(validMoves[i]);
         }
     }
 
@@ -331,6 +308,11 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // The main method for placing a piece on a specific position
+    // No checks made here if valid place to put piece, instead done in AddPiece.cs
+    // Gets the z and x of input, checks what direction one can go from that position and
+    // collects what opposing pieces should be converted to the player's. Then changes
+    // the current player and signals that valid moves need to be updated.
     public static void PlacePiece(string position)
     {
         piecesToConvert.Clear();
@@ -350,15 +332,10 @@ public class OthelloGame : MonoBehaviour
         }
         currentTurn = GetOppositeColor();
         changedValidMoves = true;
-
-        string conc = "PIECES TO CONVERT: ";
-        foreach (string p in piecesToConvert)
-        {
-            conc = conc + p + " ";
-        }
-        Debug.Log(conc);
     }
 
+    // Checks the directions one can go from the current piece
+    // Called by PlacePiece()
     static List<string> GetPossibleDirections(string position)
     {
         if (position == "00")
@@ -400,6 +377,9 @@ public class OthelloGame : MonoBehaviour
         return new List<string>();
     }
 
+    // Checks which pieces should be converted by iterating through all possible directions
+    // and adds them to global variable piecesToConvert if they pass the condition
+    // Called by PlacePiece()
     static void DeterminePiecesToConvert(List<string> possibleDirections, int z, int x)
     {
         foreach (string direction in possibleDirections)
@@ -557,16 +537,14 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // Called in AddPiece whenever an already placed piece gets converted (flipped) to a new color.
+    // Gets the global variable piecesToConvert and if it exists then remove it from the list because
+    // we have converted the piece in the view. Lock is used since several squares accesses the list
+    // and thus it ensures that the list gets accessed sequentially and not concurrently.
     public static void ApplyConvertOfPiece(string position)
     {
         lock (Lock)
         {
-            string conc = "APPLYCONVERTOFPIECE: ";
-            foreach (string p in piecesToConvert)
-            {
-                conc = conc + p + " ";
-            }
-            Debug.Log(conc);
             for (int i = 0; i < piecesToConvert.Count; i++)
             {
                 if (piecesToConvert[i] == position)

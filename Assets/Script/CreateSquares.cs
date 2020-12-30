@@ -12,7 +12,7 @@ public class CreateSquares : MonoBehaviour
     {
         GameObject board = GameObject.Find("Game_board");                               // Finds the base (black rectangular bottom)
         Transform boardTransform = board.GetComponent<Transform>();                     // Get the transform-part of board base (position and stuff)
-        int countZ = 0;                                                                 
+        int countZ = 0;                                                                 // To get positions like 00, 01, ... , 76, 77 (row|column)
         int countX = 0;
 
         for (float z = 0.42f; z > -0.43f; z = z - 0.12f)                                // To add squares with even spaces between them
@@ -26,7 +26,7 @@ public class CreateSquares : MonoBehaviour
                     x, squareObj.transform.localPosition.y, z);
                 createdSquare.transform.rotation = Quaternion.identity;                 // No rotation
                 createdSquare.transform.localScale = squareObj.transform.localScale;    // Scale of square should be as defined in the square prefab
-                createdSquare.name = "square_" + countZ + countX;                       // To give name to the square, which row/col it concerns
+                createdSquare.name = "square_" + countZ + countX;                       // To give name to the square, which row/col it concerns like square_06
                 countX++;
             }
             countZ++;
