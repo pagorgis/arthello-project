@@ -179,6 +179,10 @@ public class OthelloGame : MonoBehaviour
                 {
                     for (int i = z - 2; i >= 0; i--)
                     {
+                        if (board[i, x] == null)
+                        {
+                            return false;
+                        }
                         if (board[i, x] == currentTurn)
                         {
                             return true;
@@ -195,6 +199,10 @@ public class OthelloGame : MonoBehaviour
                     int xCounter = x + 2;
                     while (zCounter >= 0 && xCounter < board.GetLength(1))
                     {
+                        if (board[zCounter, xCounter] == null)
+                        {
+                            return false;
+                        }
                         if (board[zCounter, xCounter] == currentTurn)
                         {
                             return true;
@@ -211,6 +219,10 @@ public class OthelloGame : MonoBehaviour
                 {
                     for (int i = x + 2; i < board.GetLength(1); i++)
                     {
+                        if (board[z, i] == null)
+                        {
+                            return false;
+                        }
                         if (board[z, i] == currentTurn)
                         {
                             return true;
@@ -227,6 +239,10 @@ public class OthelloGame : MonoBehaviour
                     int xCounter = x + 2;
                     while (zCounter < board.GetLength(0) && xCounter < board.GetLength(1))
                     {
+                        if (board[zCounter, xCounter] == null)
+                        {
+                            return false;
+                        }
                         if (board[zCounter, xCounter] == currentTurn)
                         {
                             return true;
@@ -243,6 +259,10 @@ public class OthelloGame : MonoBehaviour
                 {
                     for (int i = z + 2; i < board.GetLength(0); i++)
                     {
+                        if (board[i, x] == null)
+                        {
+                            return false;
+                        }
                         if (board[i, x] == currentTurn)
                         {
                             return true;
@@ -259,6 +279,10 @@ public class OthelloGame : MonoBehaviour
                     int xCounter = x - 2;
                     while (zCounter < board.GetLength(0) && xCounter >= 0)
                     {
+                        if (board[zCounter, xCounter] == null)
+                        {
+                            return false;
+                        }
                         if (board[zCounter, xCounter] == currentTurn)
                         {
                             return true;
@@ -275,6 +299,10 @@ public class OthelloGame : MonoBehaviour
                 {
                     for (int i = x - 2; i >= 0; i--)
                     {
+                        if (board[z, i] == null)
+                        {
+                            return false;
+                        }
                         if (board[z, i] == currentTurn)
                         {
                             return true;
@@ -291,6 +319,10 @@ public class OthelloGame : MonoBehaviour
                     int xCounter = x - 2;
                     while (zCounter >= 0 && xCounter >= 0)
                     {
+                        if (board[zCounter, xCounter] == null)
+                        {
+                            return false;
+                        }
                         if (board[zCounter, xCounter] == currentTurn)
                         {
                             return true;
