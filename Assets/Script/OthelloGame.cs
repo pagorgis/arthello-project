@@ -11,6 +11,8 @@ public class OthelloGame : MonoBehaviour
     public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
     public static List<string> piecesToConvert = new List<string>();    // Store info about the pieces to be flipped after playing a piece
     static readonly object Lock = new object();                         // To make access to ApplyConvertOfPiece synchronized when accessing it
+    public static int blackScore;
+    public static int whiteScore;
 
     // Start is called before the first frame update
     // Attaches the pieces at start and get the valid moves
@@ -21,6 +23,7 @@ public class OthelloGame : MonoBehaviour
         board[4, 3] = "black";
         board[4, 4] = "white";
         GetValidMoves();
+        CalculateColors();
     }
 
     // Update is called once per frame
@@ -362,6 +365,7 @@ public class OthelloGame : MonoBehaviour
                 board[convertZ, convertX] = currentTurn;
             }
         }
+        CalculateColors();
         currentTurn = GetOppositeColor();
         changedValidMoves = true;
     }
@@ -583,6 +587,26 @@ public class OthelloGame : MonoBehaviour
                 {
                     piecesToConvert.RemoveAt(i);
                     break;
+                }
+            }
+        }
+    }
+
+    static void CalculateColors()
+    {
+        blackScore = 0;
+        whiteScore = 0;
+        for (int z = 0; z < board.GetLength(0); z++)
+        {
+            for (int x = 0; x < board.GetLength(1); x++)
+            {
+                if (board[z, x] == "black")
+                {
+                    blackScore++;
+                }
+                else if (board[z, x] == "white")
+                {
+                    whiteScore++;
                 }
             }
         }
