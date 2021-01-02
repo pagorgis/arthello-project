@@ -8,6 +8,11 @@ public class CanvasRestart : MonoBehaviour
     public GameObject restartScreen;
     public GameObject restartButton;
     public GameObject winnerText;
+    public GameObject gameOverText;
+    public GameObject backgroundCube;
+    public Material blue;
+    public Material red;
+    public Material squareGreen;
     public CreateSquares createSquaresScript;
     bool screenShown = false;
 
@@ -25,6 +30,22 @@ public class CanvasRestart : MonoBehaviour
         if (screenShown == false && OthelloGame.gameOver == true)
         {
             winnerText.GetComponent<Text>().text = "Winner: " + OthelloGame.GetWinner().ToUpper();
+            if (OthelloGame.GetWinner() == "white")
+            {
+                winnerText.GetComponent<Text>().color = Color.white;
+                gameOverText.GetComponent<Text>().color = Color.white;
+                backgroundCube.GetComponent<Renderer>().material = blue;
+            } else if (OthelloGame.GetWinner() == "black")
+            {
+                winnerText.GetComponent<Text>().color = Color.black;
+                gameOverText.GetComponent<Text>().color = Color.black;
+                backgroundCube.GetComponent<Renderer>().material = red;
+            } else
+            {
+                winnerText.GetComponent<Text>().color = Color.white;
+                gameOverText.GetComponent<Text>().color = Color.white;
+                backgroundCube.GetComponent<Renderer>().material = squareGreen;
+            }
             restartScreen.SetActive(true);
             screenShown = true;
         }
