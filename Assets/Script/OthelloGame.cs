@@ -373,7 +373,7 @@ public class OthelloGame : MonoBehaviour
             }
         }
         CalculateColors();
-        gameOverCheck();
+        GameOverCheck();
         currentTurn = GetOppositeColor();
         changedValidMoves = true;
     }
@@ -626,7 +626,14 @@ public class OthelloGame : MonoBehaviour
         return currentTurn == "black" ? "white" : "black";
     }
 
-    public static void gameOverCheck()
+    public static string GetWinner()
+    {
+        if (blackScore > whiteScore) return "black";
+        if (whiteScore > blackScore) return "white";
+        else return "tie";
+    }
+
+    public static void GameOverCheck()
     {
         if (blackScore + whiteScore == 64)
         {
@@ -638,7 +645,7 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
-    public static void resetState()
+    public static void ResetState()
     {
         Array.Clear(board, 0, board.Length);
         currentTurn = "black";

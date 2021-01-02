@@ -7,6 +7,7 @@ public class CanvasRestart : MonoBehaviour
 {
     public GameObject restartScreen;
     public GameObject restartButton;
+    public GameObject winnerText;
     public CreateSquares createSquaresScript;
     bool screenShown = false;
 
@@ -23,6 +24,7 @@ public class CanvasRestart : MonoBehaviour
     {
         if (screenShown == false && OthelloGame.gameOver == true)
         {
+            winnerText.GetComponent<Text>().text = "Winner: " + OthelloGame.GetWinner().ToUpper();
             restartScreen.SetActive(true);
             screenShown = true;
         }
@@ -31,7 +33,7 @@ public class CanvasRestart : MonoBehaviour
     void buttonClicked()
     {
         Debug.Log("clicked button");
-        OthelloGame.resetState();
+        OthelloGame.ResetState();
         restartScreen.SetActive(false);
         screenShown = false;
 
