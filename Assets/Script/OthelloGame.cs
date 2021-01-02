@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ public class OthelloGame : MonoBehaviour
     public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
     public static List<string> piecesToConvert = new List<string>();    // Store info about the pieces to be flipped after playing a piece
     static readonly object Lock = new object();                         // To make access to ApplyConvertOfPiece synchronized when accessing it
+    public static int blackScore;                                       // Stores the amount of pieces black has active
+    public static int whiteScore;                                       // Stores the amount of pieces white has active
+    public static bool gameOver = false;                                // Check if game has ended
 
     // Start is called before the first frame update
     // Attaches the pieces at start and get the valid moves
@@ -21,6 +25,7 @@ public class OthelloGame : MonoBehaviour
         board[4, 3] = "black";
         board[4, 4] = "white";
         GetValidMoves();
+        CalculateColors();
     }
 
     // Update is called once per frame
@@ -30,6 +35,11 @@ public class OthelloGame : MonoBehaviour
         if (changedValidMoves)
         {
             GetValidMoves();
+            if (validMoves.Count == 0 && (whiteScore != 0 && blackScore != 0)) // If one player can't play any piece, the other plays again.
+            {
+                currentTurn = GetOppositeColor();
+                GetValidMoves();
+            }
             changedValidMoves = false;
         }
     }
@@ -362,6 +372,8 @@ public class OthelloGame : MonoBehaviour
                 board[convertZ, convertX] = currentTurn;
             }
         }
+        CalculateColors();
+        GameOverCheck();
         currentTurn = GetOppositeColor();
         changedValidMoves = true;
     }
@@ -588,9 +600,69 @@ public class OthelloGame : MonoBehaviour
         }
     }
 
+    // Calculates how many pieces black and white have respectively. Stored in the global variables
+    static void CalculateColors()
+    {
+        blackScore = 0;
+        whiteScore = 0;
+        for (int z = 0; z < board.GetLength(0); z++)
+        {
+            for (int x = 0; x < board.GetLength(1); x++)
+            {
+                if (board[z, x] == "black")
+                {
+                    blackScore++;
+                }
+                else if (board[z, x] == "white")
+                {
+                    whiteScore++;
+                }
+            }
+        }
+    }
+
     // Returns the opposite color of current player
     static string GetOppositeColor()
     {
         return currentTurn == "black" ? "white" : "black";
+    }
+
+    // Returns the winning color
+    public static string GetWinner()
+    {
+        if (blackScore > whiteScore) return "black";
+        if (whiteScore > blackScore) return "white";
+        else return "tie";
+    }
+
+    // Sets global variable gameOver to true if all squares have pieces on them, or if one color has 0
+    public static void GameOverCheck()
+    {
+        if (blackScore + whiteScore == 64)
+        {
+            gameOver = true;
+        }
+        else if (blackScore == 0 || whiteScore == 0)
+        {
+            gameOver = true;
+        }
+    }
+
+    // Tweaks the elements of the state to refresh the game to its initial state
+    public static void ResetState()
+    {
+        Array.Clear(board, 0, board.Length);
+        currentTurn = "black";
+        validMoves.Clear();
+        piecesToConvert.Clear();
+        blackScore = 0;
+        whiteScore = 0;
+        board[3, 3] = "white";
+        board[3, 4] = "black";
+        board[4, 3] = "black";
+        board[4, 4] = "white";
+        GetValidMoves();
+        CalculateColors();
+        gameOver = false;
     }
 }
