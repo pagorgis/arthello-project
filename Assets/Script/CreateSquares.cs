@@ -35,7 +35,7 @@ public class CreateSquares : MonoBehaviour
                 createdSquare.transform.parent = boardTransform;                        // Assign it to be the child of board base
                 createdSquare.transform.localPosition = new Vector3(                    // Position should be loop x,z and the prefab's y-position
                     x, squareObj.transform.localPosition.y, z);
-                createdSquare.transform.rotation = Quaternion.Euler(0f, 0f, 0f);                 // No rotation
+                createdSquare.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);   // No rotation
                 createdSquare.transform.localScale = squareObj.transform.localScale;    // Scale of square should be as defined in the square prefab
                 createdSquare.name = "square_" + countZ + countX;                       // To give name to the square, which row/col it concerns like square_06
                 countX++;
