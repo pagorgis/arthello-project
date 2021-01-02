@@ -7,18 +7,17 @@ public class CreateSquares : MonoBehaviour
 {
     public GameObject squareObj;
 
-    // Start is called before the first frame update
     void Start()
     {
         InitSquares();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
 
+    // Creates all 64 squares needed for Othello
     public void InitSquares()
     {
         GameObject board = GameObject.Find("Game_board");                               // Finds the base (black rectangular bottom)

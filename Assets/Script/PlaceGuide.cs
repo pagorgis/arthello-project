@@ -12,12 +12,13 @@ public class PlaceGuide : MonoBehaviour
     public Material blue;                   // The color/material blue to be applied to piece (white)
     public Material red;                    // The color/material red to be applied to piece (black)
 
-    // Start is called before the first frame update
     void Start()
     {
+
     }
 
-    // Update is called once per frame
+    // Constantly updates the board with helper pieces if player can put piece on that square. Keeps track of
+    // valid moves available at the time. Removes those that become invalid to put piece on.
     void Update()
     {
         GameObject square = GameObject.Find(gameObject.name);

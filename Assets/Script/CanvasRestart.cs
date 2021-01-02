@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Script concerning the restart screen behaviour.
 public class CanvasRestart : MonoBehaviour
 {
     public GameObject restartScreen;
@@ -16,7 +17,6 @@ public class CanvasRestart : MonoBehaviour
     public CreateSquares createSquaresScript;
     bool screenShown = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         restartScreen.SetActive(false);
@@ -24,7 +24,7 @@ public class CanvasRestart : MonoBehaviour
         button.onClick.AddListener(buttonClicked);
     }
 
-    // Update is called once per frame
+    // If gameOver is true in state then game is over and display the winning text and appropriate colors
     void Update()
     {
         if (screenShown == false && OthelloGame.gameOver == true)
@@ -51,6 +51,8 @@ public class CanvasRestart : MonoBehaviour
         }
     }
 
+    // When player clicks restart. Resets the game state, hides the restart screen and removes all squares + pieces
+    // to recreate them immediately after
     void buttonClicked()
     {
         Debug.Log("clicked button");

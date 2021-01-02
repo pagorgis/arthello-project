@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Script that is used to update the score on the UI on top of the screen
 public class CanvasScore : MonoBehaviour
 {
     public GameObject blackScore;
     public GameObject whiteScore;
     public GameObject blackTurn;
     public GameObject whiteTurn;
-    // Start is called before the first frame update
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    // Updates the score that is observed from the state, and sets the "marker" to the color in turn
     void Update()
     {
         Text blackTO = blackScore.GetComponent<Text>();

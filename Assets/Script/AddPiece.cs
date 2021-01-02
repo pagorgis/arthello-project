@@ -8,14 +8,15 @@ public class AddPiece : MonoBehaviour
     public GameObject pieceObj;
     private bool placed = false; // True when a player has played a piece on this square
 
-    // Start is called before the first frame update
-    // Places the four pieces in the beginning of basic Othello
     void Start()
     {
         InitialPieces();
     }
 
-    // Update is called once per frame
+
+    // Detects touch input and also detects if this square object has been pressed. If yes, then adds the piece to the board
+    // If piece is already on board but needs to change color, it is destroyed then recreated on the opposite side.
+    // (THIS PART NEED TO BE ADJUSTED BOTH FOR ANIMATION AND CROSSHAIR STYLE OF PLAY)
     void Update()
     {
         List<string> validMoves = OthelloGame.validMoves;
@@ -75,6 +76,7 @@ public class AddPiece : MonoBehaviour
         }
     }
 
+    // Places the four pieces in the beginning of basic Othello
     public void InitialPieces()
     {
         string[] square_num = gameObject.name.Split('_');
