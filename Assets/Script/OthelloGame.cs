@@ -35,7 +35,7 @@ public class OthelloGame : MonoBehaviour
         if (changedValidMoves)
         {
             GetValidMoves();
-            if (validMoves.Count == 0)
+            if (validMoves.Count == 0 && (whiteScore != 0 && blackScore != 0))
             {
                 currentTurn = GetOppositeColor();
                 GetValidMoves();
