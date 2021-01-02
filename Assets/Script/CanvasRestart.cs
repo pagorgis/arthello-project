@@ -9,10 +9,11 @@ public class CanvasRestart : MonoBehaviour
     public GameObject restartButton;
     public CreateSquares createSquaresScript;
     bool screenShown = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        //restartScreen.SetActive(false);
+        restartScreen.SetActive(false);
         Button button = restartButton.GetComponent<Button>();
         button.onClick.AddListener(buttonClicked);
     }
@@ -24,11 +25,6 @@ public class CanvasRestart : MonoBehaviour
         {
             restartScreen.SetActive(true);
             screenShown = true;
-        }
-        else if (screenShown == true && OthelloGame.gameOver == false)
-        {
-            restartScreen.SetActive(false);
-            screenShown = false;
         }
     }
 
@@ -45,6 +41,5 @@ public class CanvasRestart : MonoBehaviour
         foreach (Transform child in baseboardTransform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
         baseBoard.GetComponent<CreateSquares>().InitSquares();
-
     }
 }
