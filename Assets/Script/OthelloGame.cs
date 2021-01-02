@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class OthelloGame : MonoBehaviour
     static readonly object Lock = new object();                         // To make access to ApplyConvertOfPiece synchronized when accessing it
     public static int blackScore;
     public static int whiteScore;
+    public static bool gameOver = false;
 
     // Start is called before the first frame update
     // Attaches the pieces at start and get the valid moves
@@ -33,6 +35,11 @@ public class OthelloGame : MonoBehaviour
         if (changedValidMoves)
         {
             GetValidMoves();
+            if (validMoves.Count == 0)
+            {
+                currentTurn = GetOppositeColor();
+                GetValidMoves();
+            }
             changedValidMoves = false;
         }
     }
@@ -366,6 +373,7 @@ public class OthelloGame : MonoBehaviour
             }
         }
         CalculateColors();
+        gameOverCheck();
         currentTurn = GetOppositeColor();
         changedValidMoves = true;
     }
@@ -616,5 +624,34 @@ public class OthelloGame : MonoBehaviour
     static string GetOppositeColor()
     {
         return currentTurn == "black" ? "white" : "black";
+    }
+
+    public static void gameOverCheck()
+    {
+        if (blackScore + whiteScore == 64)
+        {
+            gameOver = true;
+        }
+        else if (blackScore == 0 || whiteScore == 0)
+        {
+            gameOver = true;
+        }
+    }
+
+    public static void resetState()
+    {
+        Array.Clear(board, 0, board.Length);
+        currentTurn = "black";
+        validMoves.Clear();
+        piecesToConvert.Clear();
+        blackScore = 0;
+        whiteScore = 0;
+        board[3, 3] = "white";
+        board[3, 4] = "black";
+        board[4, 3] = "black";
+        board[4, 4] = "white";
+        GetValidMoves();
+        CalculateColors();
+        gameOver = false;
     }
 }
