@@ -98,5 +98,8 @@ public class AddPiece : MonoBehaviour
             piece.name = "piece_" + square_num[1];
             placed = true;
         }
+        foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+        gameObject.GetComponent<Renderer>().enabled = false;
     }
 }
