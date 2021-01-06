@@ -40,6 +40,8 @@ public class AddPiece : MonoBehaviour
                         piece.name = "piece_" + square_num[1];
                         placed = true;
                         OthelloGame.PlacePiece(square_num[1]);                              // Place piece in the board state (backend code)
+                        piece.GetComponent<PieceAnimate>().PieceDropBlack(); // init drop piece animation
+
                     } 
                     else
                     {
@@ -47,6 +49,7 @@ public class AddPiece : MonoBehaviour
                         piece.name = "piece_" + square_num[1];
                         placed = true;
                         OthelloGame.PlacePiece(square_num[1]);
+                        piece.GetComponent<PieceAnimate>().PieceDropWhite(); // init drop piece animation
                     }                    
                 }
             }
@@ -55,7 +58,8 @@ public class AddPiece : MonoBehaviour
         {
             var children = new List<GameObject>();
             foreach (Transform child in transform) children.Add(child.gameObject);          // Add all children of square object to a temporary list
-            children.ForEach(child => Destroy(child));                                      // Destroy piece to create new (if animation later, shouldn't destroy)
+            children.ForEach(child => child.GetComponent<PieceAnimate>().PieceFlipBtoW());
+            //children.ForEach(child => Destroy(child));                                      // Destroy piece to create new (if animation later, shouldn't destroy)
             OthelloGame.ApplyConvertOfPiece(square_num[1]);                                 // Remove piece from state so the view only update once with the new one
 
             GameObject squareObject = GameObject.Find(gameObject.name);
