@@ -71,6 +71,7 @@ public class AddPiece : MonoBehaviour
 
             OthelloGame.ApplyConvertOfPiece(square_num[1]);                                 // Remove piece from state so the view only update once with the new one
 
+            /*
             GameObject squareObject = GameObject.Find(gameObject.name);
             Transform squareObjectTransform = squareObject.GetComponent<Transform>();
             if (OthelloGame.currentTurn == "white")
@@ -88,6 +89,7 @@ public class AddPiece : MonoBehaviour
                 piece.name = "piece_" + square_num[1];
                 piece.GetComponent<PieceAnimate>().PieceDropBlack(); // init drop piece animation
             }
+            */
         }
     }
 
