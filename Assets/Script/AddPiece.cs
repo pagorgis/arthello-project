@@ -63,9 +63,9 @@ public class AddPiece : MonoBehaviour
 
             //children.ForEach(child => Destroy(child));                                      // Destroy piece to create new (if animation later, shouldn't destroy)  
             if (OthelloGame.currentTurn == "white")
-                children.ForEach(child => child.GetComponent<PieceAnimate>().PieceDropBlack());
+                children.ForEach(child => child.GetComponent<PieceAnimate>().PieceFlipWtoB());
             if (OthelloGame.currentTurn == "black")
-                children.ForEach(child => child.GetComponent<PieceAnimate>().PieceDropWhite());
+                children.ForEach(child => child.GetComponent<PieceAnimate>().PieceFlipBtoW());
             
             
 
