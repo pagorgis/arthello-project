@@ -11,6 +11,7 @@ public class OthelloGame : MonoBehaviour
     public static List<string> validMoves = new List<string>();         // Store info about what moves are possible currently for the player
     public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
     public static List<string> piecesToConvert = new List<string>();    // Store info about the pieces to be flipped after playing a piece
+    public static int piecesToConvertLength;                            // Stores the length of validMoves for vibration length measure
     static readonly object Lock = new object();                         // To make access to ApplyConvertOfPiece synchronized when accessing it
     public static int blackScore;                                       // Stores the amount of pieces black has active
     public static int whiteScore;                                       // Stores the amount of pieces white has active
@@ -579,6 +580,7 @@ public class OthelloGame : MonoBehaviour
                     break;
             }
         }
+        piecesToConvertLength = piecesToConvert.Count;
     }
 
     // Called in AddPiece whenever an already placed piece gets converted (flipped) to a new color.

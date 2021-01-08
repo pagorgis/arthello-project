@@ -61,8 +61,8 @@ public class AddPiece : MonoBehaviour
         }
         if (placed == true && OthelloGame.piecesToConvert.Contains(square_num[1]))          // If player has won this piece from opponent, convert it
         {
-            StartCoroutine(sound());//                                                     //the sound starts as soon as every piece converts
-            vibrate();                                                                      // the vibrate starts as as soon as every piece converts
+            StartCoroutine(sound());                                                        // The sound starts as soon as every piece converts
+            Vibration.Vibrate(OthelloGame.piecesToConvertLength * 50);                      // the vibrate starts as as soon as every piece converts
             var children = new List<GameObject>();
             foreach (Transform child in transform) children.Add(child.gameObject);          // Add all children of square object to a temporary list
             children.ForEach(child => Destroy(child));                                      // Destroy piece to create new (if animation later, shouldn't destroy)
@@ -114,7 +114,7 @@ public class AddPiece : MonoBehaviour
     }
     IEnumerator sound()
     {
-        source1 = GameObject.FindGameObjectWithTag("GamesObject1").GetComponent<AudioSource>();
+        source1 = GameObject.FindGameObjectWithTag("GameObject1").GetComponent<AudioSource>();
         source1.GetComponent<AudioSource>().clip = source1.clip;
         yield return new WaitForSeconds(0.000001F);//hur lång tid det tar innan ljudet körs
         source1.Play();
