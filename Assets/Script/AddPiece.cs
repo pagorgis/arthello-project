@@ -68,12 +68,13 @@ public class AddPiece : MonoBehaviour
             foreach (Transform child in transform) children.Add(child.gameObject);          // Add all children of square object to a temporary list
 
             //children.ForEach(child => Destroy(child));                                      // Destroy piece to create new (if animation later, shouldn't destroy)  
-            if (OthelloGame.currentTurn == "white")
-                children.ForEach(child => child.GetComponent<PieceAnimate>().PieceFlipWtoB());
-            if (OthelloGame.currentTurn == "black")
+            if (OthelloGame.lastPiecePlayer == "white")
                 children.ForEach(child => child.GetComponent<PieceAnimate>().PieceFlipBtoW());
-            
-            
+
+            if (OthelloGame.lastPiecePlayer == "black")
+                children.ForEach(child => child.GetComponent<PieceAnimate>().PieceFlipWtoB());
+
+
 
             OthelloGame.ApplyConvertOfPiece(square_num[1]);                                 // Remove piece from state so the view only update once with the new one
 

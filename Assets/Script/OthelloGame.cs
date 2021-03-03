@@ -7,6 +7,7 @@ using UnityEngine;
 public class OthelloGame : MonoBehaviour
 {
     public static string currentTurn = "black";                         // Keep track of whose turn it is
+    public static string lastPiecePlayer = "black";                         // Keep track of who played the last piece
     public static string[,] board = new string[8, 8];                   // Store the board information (which color on which position), 2D
     public static List<string> validMoves = new List<string>();         // Store info about what moves are possible currently for the player
     public static bool changedValidMoves = false;                       // Check to see if validMoves needs to be updated
@@ -376,6 +377,7 @@ public class OthelloGame : MonoBehaviour
         CalculateColors();
         GameOverCheck();
         currentTurn = GetOppositeColor();
+        lastPiecePlayer = GetOppositeColor();
         changedValidMoves = true;
     }
 
